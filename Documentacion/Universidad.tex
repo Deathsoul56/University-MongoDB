@@ -1,0 +1,1860 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, shadows, fit}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Documentación Universidad}
+\lhead{Base de Datos MongoDB}
+\cfoot{\thepage}
+
+\title{\textbf{Documentación Base de Datos Universidad}}
+\author{Sistema de Gestión Universitaria}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	\tableofcontents
+	\newpage
+	
+	%============================================
+	\section{Introducción al Proyecto}
+	%============================================
+	
+	\subsection{Descripción General}
+	Este proyecto consiste en el desarrollo de un sistema de gestión universitaria completo utilizando MongoDB como base de datos principal. El sistema está diseñado para administrar información académica de estudiantes, academicos, administrativos, cursos, carreras y toda la estructura organizacional de una institución de educación superior.
+	
+	\subsection{Objetivos del Sistema}
+	\begin{itemize}
+		\item Gestionar de manera eficiente la información académica de estudiantes
+		\item Administrar el catálogo completo de cursos y sus requisitos
+		\item Organizar la oferta académica por carreras y facultades
+		\item Proporcionar consultas rápidas y eficientes sobre datos académicos
+		\item Mantener un registro histórico de la trayectoria académica de cada estudiante
+	\end{itemize}
+	
+	\subsection{Tecnologías Utilizadas}
+	\begin{itemize}
+		\item \textbf{Base de Datos:} MongoDB (NoSQL)
+		\item \textbf{Lenguaje de Programación:} Python
+		\item \textbf{Framework Web:} React
+		\item \textbf{ODM:} PyMongo
+		\item \textbf{Documentación:} LaTeX
+	\end{itemize}
+	
+	\subsection{Alcance del Proyecto}
+	El sistema abarca la gestión completa de:
+	\begin{itemize}
+		\item 15 carreras universitarias distribuidas en 3 facultades
+		\item Más de 300 cursos diferentes
+		\item 6 idiomas disponibles como opción de segundo idioma
+		\item Seguimiento de estudiantes desde ingreso hasta egreso
+		\item Gestión de prerrequisitos y mallas curriculares
+	\end{itemize}
+	
+	\newpage
+	
+	%============================================
+	\section{Estructura de la Universidad}
+	%============================================
+	
+	\subsection{Organización Académica}
+	
+	La universidad está organizada en 7 facultades principales, cada una con sus respectivos departamentos:
+	
+	\vspace{1cm}
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=0.85, transform shape,
+			node distance=0.8cm,
+			universidad/.style={rectangle, rounded corners, draw=blue!60, fill=blue!5, very thick, minimum height=1cm, minimum width=5cm, drop shadow, font=\bfseries\large},
+			facultad/.style={rectangle, rounded corners, draw=green!60, fill=green!5, very thick, minimum height=0.7cm, minimum width=4.2cm, drop shadow, font=\bfseries\small},
+			departamento/.style={rectangle, draw=orange!60, fill=orange!5, thick, minimum height=0.5cm, minimum width=4cm, align=center, font=\scriptsize}
+			]
+			
+			% Universidad
+			\node[universidad] (uni) at (0,0) {Universidad};
+			
+			% Columna 1: Ciencias Básicas, Ingeniería y Economía
+			\node[facultad, below=1.5cm of uni, xshift=-6cm] (fac1) {Fac. Ciencias Básicas};
+			\node[departamento, below=0.4cm of fac1] (c1) {Matemáticas};
+			\node[departamento, below=0.15cm of c1] (c2) {Física};
+			\node[departamento, below=0.15cm of c2] (c3) {Química};
+			\node[departamento, below=0.15cm of c3] (c4) {Biología};
+			\node[departamento, below=0.15cm of c4] (c5) {Astronomía};
+			
+			\node[facultad, below=0.8cm of c5] (fac2) {Fac. Cs. de la Ingeniería};
+			\node[departamento, below=0.4cm of fac2] (i1) {Informática};
+			\node[departamento, below=0.15cm of i1] (i2) {Industrial};
+			\node[departamento, below=0.15cm of i2] (i3) {Civil};
+			\node[departamento, below=0.15cm of i3] (i4) {Electrónica};
+			\node[departamento, below=0.15cm of i4] (i5) {Procesos Industriales};
+			\node[departamento, below=0.15cm of i5] (i6) {Mecanica};
+			
+			\node[facultad, below=0.8cm of i6] (fac3) {Fac. Economía y Negocios};
+			\node[departamento, below=0.4cm of fac3] (e1) {Economía};
+			
+			% Columna 2: Bellas Artes, Idiomas, Pedagogía y Filosofía
+			\node[facultad, below=1.5cm of uni, xshift=6cm] (fac5) {Fac. Bellas Artes};
+			\node[departamento, below=0.4cm of fac5] (a1) {Artes Visuales};
+			\node[departamento, below=0.15cm of a1] (a2) {Artes Musicales};
+			\node[departamento, below=0.15cm of a2] (a3) {Artes Literarias};
+			\node[departamento, below=0.15cm of a3] (a4) {Artes Teatrales};
+			
+			\node[facultad, below=0.8cm of a4] (fac4) {Fac. Idiomas};
+			\node[departamento, below=0.4cm of fac4] (id1) {Inglés};
+			\node[departamento, below=0.15cm of id1] (id2) {Francés};
+			\node[departamento, below=0.15cm of id2] (id3) {Italiano};
+			\node[departamento, below=0.15cm of id3] (id4) {Chino};
+			\node[departamento, below=0.15cm of id4] (id5) {Japones};
+			\node[departamento, below=0.15cm of id5] (id6) {Aleman};
+			
+			\node[facultad, below=0.8cm of id6] (fac6) {Fac. Pedagogía};
+			\node[departamento, below=0.4cm of fac6] (p1) {Pedagogía en Matemáticas};
+			\node[departamento, below=0.15cm of p1] (p2) {Pedagogía en Lenguaje};
+			\node[departamento, below=0.15cm of p2] (p3) {Pedagogía en Educacion Fisica};
+			\node[departamento, below=0.15cm of p3] (p4) {Pedagogía en Ingles};
+			
+			\node[facultad, below=0.8cm of p4] (fac7) {Fac. Filosofía y Humanidades};
+			\node[departamento, below=0.4cm of fac7] (f1) {Filosofía};
+			\node[departamento, below=0.15cm of f1] (f2) {Historia};
+			\node[departamento, below=0.15cm of f2] (f3) {Literatura};
+			
+			% Flechas Universidad -> Facultades
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac1);
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac2);
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac3);
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac4);
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac5);
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac6);
+			\draw[-{Stealth[scale=1.2]}, thick, blue!60] (uni) -- (fac7);
+			
+			% Flechas Facultad -> Primer Departamento
+			\draw[-{Stealth}, thick, green!60] (fac1) -- (c1);
+			\draw[-{Stealth}, thick, green!60] (fac2) -- (i1);
+			\draw[-{Stealth}, thick, green!60] (fac3) -- (e1);
+			\draw[-{Stealth}, thick, green!60] (fac4) -- (id1);
+			\draw[-{Stealth}, thick, green!60] (fac5) -- (a1);
+			\draw[-{Stealth}, thick, green!60] (fac6) -- (p1);
+			\draw[-{Stealth}, thick, green!60] (fac7) -- (f1);		\end{tikzpicture}
+	\end{center}
+	
+	\vspace{1cm}
+	
+	\subsubsection{Facultad de Ciencias Básicas}
+	\begin{itemize}
+		\item Astronomía
+		\item Matemáticas
+		\item Biología
+		\item Química
+		\item Física
+	\end{itemize}
+	
+	\subsubsection{Facultad de Ciencias de la Ingeniería}
+	\begin{itemize}
+		\item Ingeniería Civil Informática
+		\item Ingeniería Civil Industrial
+		\item Ingeniería Civil
+		\item Ingeniería Civil Electrónica
+	\end{itemize}
+	
+	\subsubsection{Facultad de Economía y Negocios}
+	\begin{itemize}
+		\item Ingeniería Comercial
+	\end{itemize}
+	
+	\subsubsection{Facultad de Bellas Artes}
+	\begin{itemize}
+		\item Teatro
+		\item Artes Visuales
+		\item Artes Literarias
+	\end{itemize}
+	
+	\subsubsection{Facultad de Pedagogía}
+	\begin{itemize}
+		\item Pedagogía en Inglés
+		\item Pedagogía en Matemáticas
+	\end{itemize}
+	
+	\subsection{Sistema de Créditos}
+	\begin{itemize}
+		\item Cada carrera tiene una duración mínima de 6 semestres (3 años)
+		\item Los cursos están valorados entre 4 y 8 créditos según su complejidad
+		\item Se requiere un promedio mínimo de 4.0 para aprobar cada curso
+		\item Cada estudiante debe cursar un idioma como segundo lenguaje durante los 6 semestres
+	\end{itemize}
+	
+	\vspace{0.5cm}
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, transform shape,
+			semestre/.style={rectangle, rounded corners, draw=purple!60, fill=purple!10, very thick, minimum height=1cm, minimum width=2cm, align=center, drop shadow},
+			idioma/.style={rectangle, rounded corners, draw=teal!60, fill=teal!10, thick, minimum height=0.7cm, minimum width=2cm, align=center}
+			]
+			
+			% Título
+			\node[above, font=\large\bfseries] at (4.5,0.5) {Flujo de Estudios (6 Semestres)};
+			
+			% Semestres
+			\node[semestre] (s1) at (0,0) {\textbf{Sem 1}};
+			\node[semestre] (s2) at (2,0) {\textbf{Sem 2}};
+			\node[semestre] (s3) at (4,0) {\textbf{Sem 3}};
+			\node[semestre] (s4) at (6,0) {\textbf{Sem 4}};
+			\node[semestre] (s5) at (8,0) {\textbf{Sem 5}};
+			\node[semestre] (s6) at (10,0) {\textbf{Sem 6}};
+			
+			% Idiomas
+			\node[idioma] (i1) at (0,-2) {Idioma I};
+			\node[idioma] (i2) at (2,-2) {Idioma II};
+			\node[idioma] (i3) at (4,-2) {Idioma III};
+			\node[idioma] (i4) at (6,-2) {Idioma IV};
+			\node[idioma] (i5) at (8,-2) {Idioma V};
+			\node[idioma] (i6) at (10,-2) {Idioma VI};
+			
+			% Flechas entre semestres
+			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s1) -- (s2);
+			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s2) -- (s3);
+			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s3) -- (s4);
+			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s4) -- (s5);
+			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s5) -- (s6);
+			
+			% Flechas entre idiomas
+			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i1) -- (i2);
+			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i2) -- (i3);
+			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i3) -- (i4);
+			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i4) -- (i5);
+			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i5) -- (i6);
+			
+			% Graduación
+			\node[rectangle, rounded corners, draw=red!60, fill=red!10, very thick, minimum height=1.2cm, minimum width=2.5cm, drop shadow, font=\large\bfseries] (grad) at (12,-1) {GRADUACIÓN};
+			\draw[-{Stealth[scale=1.8]}, very thick, red!60] (s6) -- (grad);
+			\draw[-{Stealth[scale=1.8]}, very thick, red!60] (i6) -- (grad);
+			
+		\end{tikzpicture}
+	\end{center}	\vspace{0.5cm}
+	
+	\subsection{Requisitos de Graduación}
+	\begin{itemize}
+		\item Aprobar todos los cursos de la malla curricular
+		\item Completar los 6 semestres de idioma
+		\item Mantener un promedio general mínimo de 4.0
+		\item Cumplir con el trabajo de titulación correspondiente
+	\end{itemize}
+	
+	\vspace{0.5cm}
+	
+	\begin{center}
+		\begin{tikzpicture}[
+			req/.style={circle, draw=blue!60, fill=blue!10, thick, minimum size=2.3cm, align=center, drop shadow, font=\small\bfseries}
+			]
+			
+			% Título
+			\node[above, font=\large\bfseries] at (0,2) {Requisitos para Graduación};
+			
+			% Requisitos en círculos
+			\node[req] (r1) at (-4,0) {Cursos \\ Aprobados};
+			\node[req] (r2) at (4,0) {6 Semestres \\ de Idioma};
+			\node[req] (r3) at (-4,-3.5) {Promedio \\ $\geq$ 4.0};
+			\node[req] (r4) at (4,-3.5) {Trabajo de \\ Titulación};
+			
+			% Centro - Graduación
+			\node[rectangle, rounded corners, draw=green!60, fill=green!10, very thick, minimum width=3cm, minimum height=1.5cm, drop shadow, font=\Large\bfseries] (centro) at (0,-6.5) {GRADUACIÓN};
+			
+			% Flechas convergiendo al centro
+			\draw[-{Stealth[scale=1.5]}, very thick, blue!60] (r1) -- (centro);
+			\draw[-{Stealth[scale=1.5]}, very thick, blue!60] (r2) -- (centro);
+			\draw[-{Stealth[scale=1.5]}, very thick, blue!60] (r3) -- (centro);
+			\draw[-{Stealth[scale=1.5]}, very thick, blue!60] (r4) -- (centro);
+			
+		\end{tikzpicture}
+	\end{center}	\newpage	%============================================
+	\section{Catálogo de Cursos}
+	%============================================
+	
+	\subsection{Cursos de Ciencias Básicas}
+	
+	\subsubsection{Matemáticas}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Cálculo I
+			\item Cálculo II
+			\item Cálculo III
+			\item Cálculo IV
+			\item Álgebra
+			\item Álgebra Lineal
+			\item Álgebra Abstracta
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Ecuaciones Diferenciales Ordinarias II
+			\item Ecuaciones en Derivadas Parciales
+			\item Variable Compleja
+			\item Cálculo de Variaciones
+			\item Cálculo Numérico
+			\item Análisis Numérico
+			\item Análisis Multivariado
+			\item Análisis Real I
+			\item Probabilidad y Estadística
+			\item Matemáticas Discretas
+			\item Geometría I
+			\item Geometría II
+			\item Aritmética y Combinatoria
+			\item Estructuras Algebraicas
+			\item Anillos y Módulos
+			\item Teoría de Grupos
+			\item Teoría de Números
+			\item Topología General
+			\item Topología Algebraica
+			\item Espacios Métricos y Normados
+			\item Cuerpos y Álgebras
+			\item Optimización Lineal
+			\item Optimización No Lineal
+			\item Optimización
+		\end{itemize}
+	\end{multicols}
+	
+	\subsubsection{Física}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Introducción a la Física
+			\item Física Mecánica
+			\item Mecánica Clásica I
+			\item Mecánica Clásica II
+			\item Mecánica Sólidos Rígidos I
+			\item Mecánica Sólidos Rígidos II
+			\item Mecánica de Fluidos
+			\item Electromagnetismo I
+			\item Electromagnetismo II
+			\item Electrodinámica I
+			\item Electrodinámica II
+			\item Termodinámica
+			\item Óptica
+			\item Ondas y Vibraciones
+			\item Mecánica Cuántica I
+			\item Introducción a la Mecánica Cuántica
+			\item Física-Matemática I
+			\item Física Contemporánea I
+			\item Análisis Instrumental (Física)
+			\item Laboratorio I
+			\item Laboratorio II
+			\item Laboratorio III
+			\item Laboratorio IV
+		\end{itemize}
+	\end{multicols}
+	
+	\subsubsection{Química}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Introducción a la Química
+			\item Química General I
+			\item Química General II
+			\item Química Orgánica I
+			\item Química Orgánica II
+			\item Química Orgánica III
+			\item Química Inorgánica I
+			\item Química Inorgánica II
+			\item Química Analítica
+			\item Química Ambiental
+			\item Físico-Química I
+			\item Físico-Química II
+			\item Bioquímica
+			\item Electroquímica
+			\item Química de los Materiales
+			\item Ciencia de los Materiales
+			\item Cinética de los Gases
+			\item Bioinorgánica
+			\item Análisis Instrumental (Química)
+		\end{itemize}
+	\end{multicols}
+	
+	\subsection{Cursos de Ingeniería}
+	
+	\subsubsection{Programación y Computación}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Introducción a la Programación
+			\item Programación
+			\item Programación Avanzada
+			\item Estructura de Datos
+			\item Diseño y Análisis de Algoritmos
+			\item Base de Datos
+			\item Arquitectura de Computadores
+			\item Circuitos Digitales
+			\item Lógica para Ciencia de la Computación
+			\item Teoría de la Computación
+			\item Estructuras Discretas
+			\item Ingeniería de Software I
+			\item Ingeniería de Software II
+			\item Redes
+			\item Redes Avanzadas
+			\item Gestión de la Información I
+			\item Tecnologías de la Información
+		\end{itemize}
+	\end{multicols}
+	
+	\subsubsection{Electrónica y Circuitos}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Electrónica
+			\item Semi Conductores
+			\item Teoría de Circuitos I
+			\item Teoría de Circuitos II
+			\item Sistemas Lineales Dinámicos
+		\end{itemize}
+	\end{multicols}
+	
+	\subsubsection{Gestión y Economía}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Economía I
+			\item Economía II
+			\item Economía III
+			\item Microeconomía I
+			\item Microeconomía II
+			\item Microeconomía III
+			\item Macroeconomía I
+			\item Macroeconomía II
+			\item Macroeconomía III
+			\item Contabilidad I
+			\item Contabilidad II
+			\item Contabilidad y Finanzas
+			\item Finanzas I
+			\item Finanzas II
+			\item Costos
+			\item Marketing
+			\item Ingeniería Económica
+			\item Investigación de Operaciones I
+			\item Investigación de Operaciones II
+			\item Gestión de Operaciones I
+			\item Recursos Humanos
+			\item Teoría Organizacional
+			\item Inferencia Estadística I
+			\item Inferencia Estadística II
+			\item Econometría
+		\end{itemize}
+	\end{multicols}
+	
+	\subsection{Cursos de Artes y Humanidades}
+	
+	\subsubsection{Teatro}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Acción y Teatralidad
+			\item Actuación I: Improvisación Teatral
+			\item Actuación II: Acción y Relato
+			\item Actuación III: Realismo
+			\item Actuación IV: Teatro Épico
+			\item Actuación V: Poéticas Contemporáneas
+			\item Actuación VI: Territorios y Espacios Públicos
+			\item Movimiento I: Preparación Corporal
+			\item Movimiento II: Acción y Espacio
+			\item Movimiento III: Investigación de Lenguajes Corporales
+			\item Movimiento IV: Danza Contemporánea
+			\item Movimiento V: Técnica Circense
+			\item Voz I: Percepción Vocal
+			\item Voz II: Acción y Palabra
+			\item Voz III: Interpretación Vocal
+			\item Voz IV: Canto
+			\item Voz V: Poéticas Vocales
+			\item Teoría de la Representación
+			\item Teoría del Teatro I
+			\item Teoría del Teatro II
+			\item Teoría y Estética Teatral
+			\item Historia del Teatro I
+			\item Historia del Teatro II
+			\item Historia del Teatro III
+			\item Análisis Dramatúrgico I
+			\item Análisis Dramatúrgico II
+			\item Dramaturgia
+			\item Taller de Dramaturgia
+			\item Dirección Teatral
+			\item Taller de Dirección
+			\item Teatro Chileno y Latinoamericano
+		\end{itemize}
+	\end{multicols}
+	
+	\subsubsection{Artes Visuales}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Introducción a las Artes Visuales
+			\item Dibujo I al VI
+			\item Color I y II
+			\item Volumen I y II
+			\item Forma y Espacio I y II
+			\item Gráfica I y II
+			\item Historia del Arte I al VI
+			\item Arte Digital I al III
+			\item Teoría del Arte
+			\item Teorías del Análisis Visual
+			\item Teoría de la Producción Visual
+			\item Arte Chileno y Latinoamericano
+			\item Arte Moderno
+			\item Arte Contemporáneo
+			\item Pensamiento Estético I
+			\item Teorías de la Imagen
+		\end{itemize}
+	\end{multicols}
+	
+	\subsubsection{Literatura}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Introducción a la Teoría Literaria
+			\item Introducción a la Literatura
+			\item Literatura Universal: Letras Clásicas y Medievales
+			\item Literatura Universal Moderna y Contemporánea
+			\item Literatura Española: Medioevo y Siglo de Oro
+			\item Literatura Española: Moderna y Contemporánea
+			\item Literatura Latinoamericana I al III
+			\item Literatura Hispanoamericana Contemporánea
+			\item Literatura Chilena I y II
+			\item Literatura Infantil y Juvenil
+			\item Poesía I al IV
+			\item Cuentos I al IV
+			\item Obras Dramatúrgicas I al IV
+			\item Novelas I al IV
+			\item Comedia I y II
+			\item Ensayos I y II
+			\item Biografías I y II
+			\item Historia de la Lengua Española
+			\item Lingüística General
+			\item Latín
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%============================================
+	\section{Carreras Universitarias}
+	%============================================
+	
+	%--------------------------------------------
+	\subsection{Astronomía}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Astronomía
+			\item Introducción a las Ciencias
+			\item Introducción a la Física
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Astronomía I
+			\item Programación
+			\item Química General I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Astronomía II
+			\item Programación Avanzada
+			\item Física Mecánica
+			\item Laboratorio I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Análisis Multivariado
+			\item Astrofísica General
+			\item Electromagnetismo I
+			\item Astronomía Práctica I
+			\item Laboratorio II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Variable Compleja
+			\item Cálculo de Variaciones
+			\item Astrofísica Estelar
+			\item Electrodinámica I
+			\item Astronomía Práctica II
+			\item Laboratorio III
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Mecánica Clásica I
+			\item Astrofísica Galáctica
+			\item Termodinámica
+			\item Óptica
+			\item Laboratorio IV
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Matemáticas}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Aritmética y Combinatoria
+			\item Geometría I
+			\item Introducción a las Ciencias
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Matemáticas Discretas
+			\item Geometría II
+			\item Programación
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Álgebra Abstracta
+			\item Probabilidad y Estadística
+			\item Estructuras Algebraicas
+			\item Anillos y Módulos
+			\item Programación Avanzada
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Cálculo IV
+			\item Análisis Multivariado
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Anillos y Módulos
+			\item Espacios Métricos y Normados
+			\item Optimización Lineal
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Cálculo de Variaciones
+			\item Variable Compleja
+			\item Ecuaciones Diferenciales Ordinarias II
+			\item Cálculo Numérico
+			\item Topología General
+			\item Optimización No Lineal
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Análisis Real I
+			\item Teoría de Grupos
+			\item Ecuaciones en Derivadas Parciales
+			\item Análisis Numérico
+			\item Topología Algebraica
+			\item Cuerpos y Álgebras
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Biología}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Biología
+			\item Introducción a las Ciencias
+			\item Introducción a la Química
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Biología General I
+			\item Química General I
+			\item Ambiente y Vida
+			\item Biología Celular
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Bioestadística I
+			\item Biología General II
+			\item Física Mecánica
+			\item Bioinorgánica
+			\item Química Orgánica I
+			\item Zoología
+			\item Laboratorio I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Bioestadística II
+			\item Diversidad Vegetal I
+			\item Diversidad Animal I
+			\item Biodiversidad
+			\item Electromagnetismo I
+			\item Bioquímica
+			\item Laboratorio II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Diversidad Vegetal II
+			\item Diversidad Animal II
+			\item Microbiología General
+			\item Genética
+			\item Fundamentos de Geociencias
+			\item Botánica
+			\item Laboratorio III
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Diversidad Vegetal III
+			\item Diversidad Animal III
+			\item Genoma
+			\item Biología Molecular
+			\item Ecología
+			\item Biofísica
+			\item Laboratorio IV
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Química}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Química
+			\item Introducción a las Ciencias
+			\item Introducción a la Física
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Química General I
+			\item Programación
+			\item Laboratorio I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Química General II
+			\item Análisis Instrumental (Química)
+			\item Cinética de los Gases
+			\item Física Mecánica
+			\item Laboratorio II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Química Orgánica I
+			\item Electromagnetismo I
+			\item Físico-Química I
+			\item Ciencia de los Materiales
+			\item Biología General I
+			\item Laboratorio III
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Química Orgánica II
+			\item Físico-Química II
+			\item Química Analítica
+			\item Bioquímica
+			\item Química Inorgánica I
+			\item Laboratorio IV
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Termodinámica
+			\item Química Orgánica III
+			\item Química Ambiental
+			\item Química Inorgánica II
+			\item Electroquímica
+			\item Química de los Materiales
+			\item Laboratorio VI
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Física}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Química
+			\item Introducción a las Ciencias
+			\item Introducción a la Física
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Física Mecánica
+			\item Programación
+			\item Química General I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Mecánica Sólidos Rígidos I
+			\item Electromagnetismo I
+			\item Programación Avanzada
+			\item Análisis Instrumental (Física)
+			\item Laboratorio I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Cálculo de Variaciones
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Mecánica Sólidos Rígidos II
+			\item Electromagnetismo II
+			\item Mecánica Clásica I
+			\item Ondas y Vibraciones
+			\item Laboratorio II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Variable Compleja
+			\item Electrodinámica I
+			\item Mecánica Clásica II
+			\item Óptica
+			\item Termodinámica
+			\item Introducción a la Mecánica Cuántica
+			\item Laboratorio III
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Física-Matemática I
+			\item Mecánica Cuántica I
+			\item Electrodinámica II
+			\item Mecánica de Fluidos
+			\item Física Contemporánea I
+			\item Laboratorio IV
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Ingeniería Civil Informática}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Ingeniería
+			\item Introducción a la Programación
+			\item Introducción a la Innovación
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Programación
+			\item Química General I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Programación Avanzada
+			\item Lógica para Ciencia de la Computación
+			\item Física Mecánica
+			\item Arquitectura de Computadores
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Matemáticas Discretas
+			\item Estructura de Datos
+			\item Ingeniería de Software I
+			\item Electromagnetismo I
+			\item Circuitos Digitales
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Estructuras Discretas
+			\item Economía I
+			\item Electrónica
+			\item Ondas y Vibraciones
+			\item Base de Datos
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Investigación de Operaciones I
+			\item Teoría de la Computación
+			\item Ingeniería de Software II
+			\item Diseño y Análisis de Algoritmos
+			\item Gestión de la Información I
+			\item Redes
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Ingeniería Civil Industrial}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Ingeniería
+			\item Introducción a la Innovación
+			\item Tecnologías de la Información
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Programación
+			\item Química General I
+			\item Teoría Organizacional
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Programación Avanzada
+			\item Física Mecánica
+			\item Ciencia de los Materiales
+			\item Ética
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Análisis Multivariado
+			\item Investigación de Operaciones I
+			\item Electromagnetismo I
+			\item Contabilidad y Finanzas
+			\item Economía I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Investigación de Operaciones II
+			\item Economía II
+			\item Termodinámica
+			\item Electrónica
+			\item Base de Datos
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Optimización
+			\item Gestión de Operaciones I
+			\item Mecánica de Fluidos
+			\item Recursos Humanos
+			\item Taller de Aplicación Industrial
+			\item Ingeniería Económica
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Ingeniería Civil}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Ingeniería
+			\item Introducción a la Innovación
+			\item Introducción a la Física
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Programación
+			\item Química General I
+			\item Física Mecánica
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Programación Avanzada
+			\item Estática
+			\item Ciencia de los Materiales
+			\item Ética
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Dinámica
+			\item Investigación de Operaciones I
+			\item Electromagnetismo I
+			\item Termodinámica
+			\item Economía I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Investigación de Operaciones II
+			\item Contabilidad y Finanzas
+			\item Mecánica de Fluidos
+			\item Resistencia de Materiales
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Dibujo Industrial
+			\item Ingeniería Económica
+			\item Materiales de Construcción
+			\item Análisis Estructural
+			\item Hidráulica
+			\item Transferencia de Calor
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Ingeniería Comercial}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Ingeniería
+			\item Introducción a la Innovación
+			\item Introducción a la Programación
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Economía I
+			\item Programación
+			\item Tecnologías de la Información
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Economía II
+			\item Contabilidad I
+			\item Microeconomía I
+			\item Macroeconomía I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Inferencia Estadística I
+			\item Economía III
+			\item Contabilidad II
+			\item Microeconomía II
+			\item Macroeconomía II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Investigación de Operaciones I
+			\item Inferencia Estadística II
+			\item Finanzas I
+			\item Costos
+			\item Microeconomía III
+			\item Macroeconomía III
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Investigación de Operaciones II
+			\item Econometría
+			\item Finanzas II
+			\item Ingeniería Económica
+			\item Marketing
+			\item Gestión de Operaciones I
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Ingeniería Civil Electrónica}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Cálculo I
+			\item Álgebra
+			\item Introducción a la Ingeniería
+			\item Introducción a la Programación
+			\item Introducción a la Física
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Cálculo II
+			\item Álgebra Lineal
+			\item Programación
+			\item Electrónica
+			\item Química General I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Cálculo III
+			\item Probabilidad y Estadística
+			\item Programación Avanzada
+			\item Física Mecánica
+			\item Matemáticas Discretas
+			\item Ética
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Análisis Multivariado
+			\item Base de Datos
+			\item Electromagnetismo I
+			\item Investigación de Operaciones I
+			\item Economía I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Cálculo Numérico
+			\item Teoría de Circuitos I
+			\item Semi Conductores
+			\item Optimización
+			\item Redes
+			\item Estructuras Discretas
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Variable Compleja
+			\item Teoría de Circuitos II
+			\item Circuitos Digitales
+			\item Sistemas Lineales Dinámicos
+			\item Redes Avanzadas
+			\item Ingeniería Económica
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Pedagogía en Inglés}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Inglés I
+			\item Fonética Inglesa I
+			\item Gramática Inglesa I
+			\item Educación, Sociedad y Desarrollo Humano
+			\item Taller de Vocabulario
+			\item Taller de Pronunciación
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Inglés II
+			\item Fonética Inglesa II
+			\item Gramática Inglesa II
+			\item Taller Pedagógico I
+			\item Identidad Profesional Docente
+			\item Sistema Fonémico de la Lengua Inglesa
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Inglés III
+			\item Fonética Inglesa III
+			\item Morfosintaxis I
+			\item Taller Pedagógico II
+			\item Construcción del Ser Docente y rol Pedagógico
+			\item Introducción a la Didáctica del Idioma Inglés
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Inglés IV
+			\item Morfosintaxis II
+			\item Evaluación de los Aprendizajes
+			\item Análisis de la Gramática
+			\item Psicología Educativa
+			\item Taller Pedagógico III
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Inglés V
+			\item Investigación Acción en la Escuela
+			\item Escritura Académica
+			\item Didáctica del Idioma Inglés I
+			\item Literatura Contemporánea en Lengua Inglesa
+			\item Taller Pedagógico IV
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Inglés VI
+			\item Didáctica del Idioma Inglés II
+			\item Teorías y Diseños Curriculares
+			\item Entonación de la Lengua Inglesa
+			\item Orientación Educacional
+			\item Lingüística Aplicada I
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Pedagogía en Matemáticas}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Introducción a la Enseñanza de la Matemáticas
+			\item Cálculo I
+			\item Algebra
+			\item Aritmética y Combinatoria
+			\item Geometría I
+			\item Educación, Sociedad y Desarrollo Humano
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Aprendizaje de las Ciencias
+			\item Cálculo II
+			\item Algebra Lineal
+			\item Geometría II
+			\item Taller Pedagógico I
+			\item Didáctica de la Matemática
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Teoría del Aprendizaje
+			\item Cálculo III
+			\item Algebra Abstracta
+			\item Probabilidad y Estadística
+			\item Taller Pedagógico II
+			\item Didáctica de la Geometría
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Gestión Escolar
+			\item Calculo Numérico
+			\item Estructuras Algebraicas
+			\item Identidad Profesional Docente
+			\item Taller Pedagógico III
+			\item Didáctica de la Estadística y las Probabilidades
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Investigación Acción en la Escuela
+			\item Ecuaciones Diferenciales Ordinarias I
+			\item Teoría de Números
+			\item Construcción del Ser Docente y rol Pedagogico
+			\item Taller Pedagógico IV
+			\item Didáctica del Algebra
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Liderazgo Educativo
+			\item Variable Compleja
+			\item Teorías y Diseños Curriculares
+			\item Psicología Educativa
+			\item Investigación Acción en la Escuela
+			\item Evaluación de los Aprendizajes 
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Teatro}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Acción y Teatralidad
+			\item Actuación I: Improvisación Teatral
+			\item Movimiento I: Preparación Corporal
+			\item Voz I: Percepción Vocal
+			\item Teoría de la Representación
+			\item Historia del Teatro I
+			\item Introducción a la Audición Musical
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Actuación II: Acción y Relato
+			\item Movimiento II: Acción y Espacio
+			\item Voz II: Acción y Palabra
+			\item Análisis Dramatúrgico I
+			\item Historia del Teatro II
+			\item Apreciación y Teorías del Arte
+			\item Taller de Escenotécnica
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Actuación III: Realismo
+			\item Movimiento III: Investigación de Lenguajes Corporales
+			\item Voz III: Interpretación Vocal
+			\item Análisis Dramatúrgico II
+			\item Historia del Teatro III
+			\item Taller de Maquillaje y Caracterización
+			\item Taller de Música y Sonoridad Escénica
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Actuación IV: Teatro Épico
+			\item Movimiento IV: Danza Contemporánea
+			\item Voz IV: Canto
+			\item Teoría del Teatro I
+			\item Dramaturgia
+			\item Teatro Chileno y Latinoamericano
+			\item Diseño Teatral: Escenografía, Iluminación y Vestuario
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Actuación V: Poéticas Contemporáneas
+			\item Movimiento V: Técnica Circense
+			\item Voz V: Poéticas Vocales
+			\item Teoría del Teatro II
+			\item Taller de Dirección
+			\item Taller Diseño Escénico
+			\item Taller Vocal I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Actuación VI: Territorios y Espacios Públicos
+			\item Taller de Dramaturgia
+			\item Creación Actoral I
+			\item Teoría y Estética Teatral
+			\item Dirección Teatral
+			\item Taller de Baile
+			\item Taller Vocal II
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Artes Visuales}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Introducción a las Artes Visuales
+			\item Dibujo I
+			\item Color I
+			\item Volumen I
+			\item Forma y Espacio I
+			\item Gráfica I
+			\item Historia del Arte I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Teoría del Arte
+			\item Dibujo II
+			\item Color II
+			\item Volumen II
+			\item Forma y Espacio II
+			\item Gráfica II
+			\item Historia del Arte II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Teorías del Análisis Visual
+			\item Taller de Croquis
+			\item Dibujo III
+			\item Arte Digital I
+			\item Historia del Arte III
+			\item Arte Chileno y Latinoamericano
+			\item Noción Proyectual
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Teoría de la Producción Visual
+			\item Taller de Proyectos de Aplicación
+			\item Dibujo IV
+			\item Historia del Arte IV
+			\item Recursos Proyectuales
+			\item Arte Moderno
+			\item Arte Digital II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Taller Producción Visual I
+			\item Dibujo V
+			\item Historia del Arte V
+			\item Arte Digital III
+			\item Pensamiento Estético I
+			\item Museología y Mediación
+			\item Arte Contemporáneo
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Taller Producción Visual II
+			\item Dibujo VI
+			\item Historia del Arte VI
+			\item Pensamiento Estético I
+			\item Teorías de la Imagen
+			\item Textos de Arte
+			\item Taller Central
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Artes Literarias}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Introduccion a la Teoria Literaria
+			\item Introducción a la Literatura
+			\item Taller de Competencias Comunicativas I
+			\item Poesia I
+			\item Cuentos I
+			\item Obras Dramatúrgicas I
+			\item Novelas I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Literatura Universal: Letras Clásicas y Medievales
+			\item Literatura Española: Medioevo y Siglo de Oro
+			\item Taller de Competencias Comunicativas II
+			\item Poesia II
+			\item Cuentos II
+			\item Obras Dramatúrgicas II
+			\item Novelas II
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Literatura Universal Moderna y Contemporánea
+			\item Literatura Española: Moderna y Contemporánea
+			\item Literatura Latinoamericana I
+			\item Poesia III
+			\item Cuentos III
+			\item Obras Dramatúrgicas III
+			\item Novelas III
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Historia de la Lengua Española
+			\item Literatura Infantil y Juvenil
+			\item Literatura Latinoamericana II
+			\item Poesia IV
+			\item Cuentos IV
+			\item Obras Dramatúrgicas IV
+			\item Novelas IV
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Literatura Hispanoamericana Contemporánea
+			\item Literatura Chilena I
+			\item Literatura Latinoamericana III
+			\item Latín
+			\item Comedia I
+			\item Ensayos I
+			\item Biografias I
+			\item Idioma
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Lingüística General
+			\item Literatura Chilena II
+			\item Introducción al Comentario de Textos Liricos
+			\item Introducción al Comentario de Textos Dramáticos-Teatrales
+			\item Comedia II
+			\item Ensayos II
+			\item Biografias II
+			\item Idioma
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
+	\subsection{Catálogo de Idiomas}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Inglés}
+		\begin{itemize}
+			\item Inglés I
+			\item Inglés II
+			\item Inglés III
+			\item Inglés IV
+			\item Inglés V
+			\item Inglés VI
+		\end{itemize}
+		
+		\textbf{Francés}
+		\begin{itemize}
+			\item Francés I
+			\item Francés II
+			\item Francés III
+			\item Francés IV
+			\item Francés V
+			\item Francés VI
+		\end{itemize}
+		
+		\textbf{Italiano}
+		\begin{itemize}
+			\item Italiano I
+			\item Italiano II
+			\item Italiano III
+			\item Italiano IV
+			\item Italiano V
+			\item Italiano VI
+		\end{itemize}
+		
+		\textbf{Alemán}
+		\begin{itemize}
+			\item Alemán I
+			\item Alemán II
+			\item Alemán III
+			\item Alemán IV
+			\item Alemán V
+			\item Alemán VI
+		\end{itemize}
+		
+		\textbf{Portugués}
+		\begin{itemize}
+			\item Portugués I
+			\item Portugués II
+			\item Portugués III
+			\item Portugués IV
+			\item Portugués V
+			\item Portugués VI
+		\end{itemize}
+		
+		\textbf{Mandarín}
+		\begin{itemize}
+			\item Mandarín I
+			\item Mandarín II
+			\item Mandarín III
+			\item Mandarín IV
+			\item Mandarín V
+			\item Mandarín VI
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%============================================
+	\section{Tablas de la Base de Datos}
+	%============================================
+	
+	%--------------------------------------------
+	\subsection{Tabla: Cursos (courses)}
+	%--------------------------------------------
+	
+	\subsubsection{Descripción}
+	Almacena información sobre todos los cursos disponibles en la universidad, incluyendo sus características y ubicación dentro de la estructura académica.
+	
+	\subsubsection{Estructura de la Tabla}
+	
+	\begin{longtable}{|p{3cm}|p{3cm}|p{8cm}|}
+		\hline
+		\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+		\hline
+		\endfirsthead
+		
+		\hline
+		\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+		\hline
+		\endhead
+		
+		\hline
+		\endfoot
+		
+		Código & String & Código único del curso (ej: MAT103, INF100) \\
+		\hline
+		Nombre & String & Nombre completo del curso \\
+		\hline
+		Facultad & String & Facultad a la que pertenece el curso \\
+		\hline
+		Sub-Facultad & String & Departamento o sub-facultad específica \\
+		\hline
+		Créditos & Number & Cantidad de créditos del curso \\
+		\hline
+	\end{longtable}
+	
+	\subsubsection{Ejemplo de Documento MongoDB}
+	
+	\begin{verbatim}
+		{
+			"_id": ObjectId("..."),
+			"codigo": "MAT103",
+			"nombre": "Cálculo I",
+			"facultad": "Ciencias",
+			"subfacultad": "Matemáticas",
+			"creditos": 6
+		}
+	\end{verbatim}
+	
+	%--------------------------------------------
+	\subsection{Tabla: Estudiantes (students)}
+	%--------------------------------------------
+	
+	\subsubsection{Descripción}
+	Almacena información completa de los estudiantes, incluyendo datos personales, académicos y cursos cursados.
+	
+	\subsubsection{Estructura de la Tabla}
+	
+	\begin{longtable}{|p{3cm}|p{3cm}|p{8cm}|}
+		\hline
+		\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+		\hline
+		\endfirsthead
+		
+		\hline
+		\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+		\hline
+		\endhead
+		
+		\hline
+		\endfoot
+		
+		RUT & String & Identificador único del estudiante \\
+		\hline
+		Datos Personales & Object & Información personal del estudiante \\
+		\hline
+		Datos Académicos & Object & Información académica del estudiante \\
+		\hline
+		Cursos & Array & Lista de cursos cursados \\
+		\hline
+	\end{longtable}
+	
+	\subsubsection{Ejemplo de Documento MongoDB}
+	
+	\begin{verbatim}
+		{
+			"_id": ObjectId("..."),
+			"rut": "16483921-9",
+			"datos_personales": {
+				"nombre": "Juan",
+				"apellido": "Pérez",
+				"fecha_nacimiento": "2000-05-15",
+				"correo": "juan.perez@universidad.cl",
+				"telefono": "+56912345678"
+			},
+			"datos_academicos": {
+				"codigo_carrera": "INF",
+				"nombre_carrera": "Ingeniería Informática",
+				"año_ingreso": 2020,
+				"estado": "Activo"
+			},
+			"cursos": [
+			{
+				"codigo": "MAT103",
+				"nombre": "Cálculo I",
+				"año": 2020,
+				"semestre": 1,
+				"creditos": 6,
+				"nota": 5.5,
+				"estado": "Aprobado"
+			}
+			]
+		}
+	\end{verbatim}
+	
+	\subsubsection{Índices Recomendados}
+	
+	\begin{itemize}
+		\item Índice único en \texttt{rut}
+		\item Índice en \texttt{datos\_academicos.codigo\_carrera}
+		\item Índice en \texttt{datos\_academicos.estado}
+		\item Índice en \texttt{datos\_personales.correo}
+		\item Índice en \texttt{cursos.estado}
+	\end{itemize}
+	
+	\subsubsection{Consultas Comunes}
+	
+	\begin{verbatim}
+		// Buscar alumno por RUT
+		db.students.find({"rut": "16483921-9"})
+		
+		// Buscar alumnos de una carrera
+		db.students.find({"datos_academicos.codigo_carrera": "INF"})
+		
+		// Buscar alumnos cursando
+		db.students.find({"cursos": {$elemMatch: {"estado": "Cursando"}}})
+	\end{verbatim}
+	
+\end{document}
