@@ -1826,13 +1826,6 @@ db.courses.insertMany([
   "Créditos": 30
 },
 {
-  "Código": "PRI106",
-  "Nombre": "Termodinámica de Procesos",
-  "Facultad": "Ciencias de la Ingenieria",
-  "Departamento": "Procesos Industriales",
-  "Créditos": 30
-},
-{
   "Código": "MEC100",
   "Nombre": "Procesos de Fabricación",
   "Facultad": "Ciencias de la Ingenieria",
@@ -2680,189 +2673,189 @@ db.courses.insertMany([
   "Créditos": 30
 },
 {
-  "Código": "ALI105",
+  "Código": "ALI102",
   "Nombre": "Taller de Lectura y Escritura Academica",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI106",
+  "Código": "ALI103",
   "Nombre": "Poesia I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI107",
+  "Código": "ALI104",
   "Nombre": "Poesia II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI108",
+  "Código": "ALI105",
   "Nombre": "Poesia III",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI109",
+  "Código": "ALI106",
   "Nombre": "Poesia IV",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI110",
+  "Código": "ALI107",
   "Nombre": "Cuentos I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI111",
+  "Código": "ALI108",
   "Nombre": "Cuentos II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI112",
+  "Código": "ALI109",
   "Nombre": "Cuentos III",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI113",
+  "Código": "ALI110",
   "Nombre": "Cuentos IV",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI114",
+  "Código": "ALI111",
   "Nombre": "Obras Dramatúrgicas I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI115",
+  "Código": "ALI112",
   "Nombre": "Obras Dramatúrgicas II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI116",
+  "Código": "ALI113",
   "Nombre": "Obras Dramatúrgicas III",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI117",
+  "Código": "ALI114",
   "Nombre": "Obras Dramatúrgicas IV",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI118",
+  "Código": "ALI115",
   "Nombre": "Novelas I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI119",
+  "Código": "ALI116",
   "Nombre": "Novelas II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI120",
+  "Código": "ALI117",
   "Nombre": "Novelas III",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI121",
+  "Código": "ALI118",
   "Nombre": "Novelas IV",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI122",
+  "Código": "ALI119",
   "Nombre": "Comedia I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI123",
+  "Código": "ALI120",
   "Nombre": "Comedia II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI124",
+  "Código": "ALI121",
   "Nombre": "Comedia III",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI125",
+  "Código": "ALI122",
   "Nombre": "Comedia IV",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI126",
+  "Código": "ALI123",
   "Nombre": "Ensayos I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI127",
+  "Código": "ALI124",
   "Nombre": "Ensayos II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI128",
+  "Código": "ALI125",
   "Nombre": "Ensayos III",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI129",
+  "Código": "ALI126",
   "Nombre": "Ensayos IV",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI130",
+  "Código": "ALI127",
   "Nombre": "Biografias I",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
   "Créditos": 30
 },
 {
-  "Código": "ALI131",
+  "Código": "ALI128",
   "Nombre": "Biografias II",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Literarias",
@@ -3199,7 +3192,7 @@ db.courses.insertMany([
 },
 {
   "Código": "ATE147",
-  "Nombre": "Diseño Teatral: Escenografía Iluminación y Vestuario",
+  "Nombre": "Diseño Teatral: Escenografía, Iluminación y Vestuario",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Teatrales",
   "Créditos": 30
@@ -3227,7 +3220,7 @@ db.courses.insertMany([
 },
 {
   "Código": "ATE151",
-  "Nombre": "Taller de Radio Doblaje y Locución",
+  "Nombre": "Taller de Radio, Doblaje y Locución",
   "Facultad": "Bellas Artes",
   "Departamento": "Artes Teatrales",
   "Créditos": 30
@@ -3474,42 +3467,42 @@ db.courses.insertMany([
   "Código": "GER100",
   "Nombre": "Alemán I",
   "Facultad": "Idiomas",
-  "Departamento": "Alemán",
+  "Departamento": "Aleman",
   "Créditos": 30
 },
 {
   "Código": "GER101",
   "Nombre": "Alemán II",
   "Facultad": "Idiomas",
-  "Departamento": "Alemán",
+  "Departamento": "Aleman",
   "Créditos": 30
 },
 {
   "Código": "GER102",
   "Nombre": "Alemán III",
   "Facultad": "Idiomas",
-  "Departamento": "Alemán",
+  "Departamento": "Aleman",
   "Créditos": 30
 },
 {
   "Código": "GER103",
   "Nombre": "Alemán IV",
   "Facultad": "Idiomas",
-  "Departamento": "Alemán",
+  "Departamento": "Aleman",
   "Créditos": 30
 },
 {
   "Código": "GER104",
   "Nombre": "Alemán V",
   "Facultad": "Idiomas",
-  "Departamento": "Alemán",
+  "Departamento": "Aleman",
   "Créditos": 30
 },
 {
   "Código": "GER105",
   "Nombre": "Alemán VI",
   "Facultad": "Idiomas",
-  "Departamento": "Alemán",
+  "Departamento": "Aleman",
   "Créditos": 30
 },
 {
@@ -3738,118 +3731,111 @@ db.courses.insertMany([
 },
 {
   "Código": "PEL124",
-  "Nombre": "Gestión Escolar",
-  "Facultad": "Pedagogia",
-  "Departamento": "Lenguaje",
-  "Créditos": 30
-},
-{
-  "Código": "PEL125",
   "Nombre": "Dialectología y Sociolingüística",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL126",
+  "Código": "PEL125",
   "Nombre": "Literatura Chilena I",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL127",
+  "Código": "PEL126",
   "Nombre": "Literatura Chilena II",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL128",
+  "Código": "PEL127",
   "Nombre": "Literatura Chilena III",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL129",
+  "Código": "PEL128",
   "Nombre": "Didáctica de la Producción del Discurso Escrito",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL130",
+  "Código": "PEL129",
   "Nombre": "Desarrollo de la Expresión Teatral",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL131",
+  "Código": "PEL130",
   "Nombre": "Didáctica de la Producción del Discurso Oral",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL132",
+  "Código": "PEL131",
   "Nombre": "Didáctica Multicultural",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL133",
+  "Código": "PEL132",
   "Nombre": "Español Académico para la Pedagogía",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL134",
+  "Código": "PEL133",
   "Nombre": "Introducción al Comentario de Textos Liricos",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL135",
+  "Código": "PEL134",
   "Nombre": "Introducción al Comentario de Textos Dramáticos-Teatrales",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL136",
+  "Código": "PEL135",
   "Nombre": "Latín",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL137",
+  "Código": "PEL136",
   "Nombre": "Literatura Hispanoamericana Contemporánea",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL138",
+  "Código": "PEL137",
   "Nombre": "Lingüística General",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL139",
+  "Código": "PEL138",
   "Nombre": "Lingüística Cultural",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
   "Créditos": 30
 },
 {
-  "Código": "PEL140",
+  "Código": "PEL139",
   "Nombre": "Literatura Griega y Latina",
   "Facultad": "Pedagogia",
   "Departamento": "Lenguaje",
@@ -4305,7 +4291,7 @@ db.courses.insertMany([
 },
 {
   "Código": "PED106",
-  "Nombre": "Educación Sociedad y Desarrollo Humano",
+  "Nombre": "Educación, Sociedad y Desarrollo Humano",
   "Facultad": "Pedagogia",
   "Departamento": "Común",
   "Créditos": 30
@@ -4348,10 +4334,9 @@ db.courses.insertMany([
 {
   "Código": "FIL100",
   "Nombre": "Ética",
-  "Facultad": "Filosofía",
+  "Facultad": "Filosofía y Humanidades",
   "Departamento": "Filosofía",
   "Créditos": 30
 }
 ])
 
-db.courses.deleteMany({})

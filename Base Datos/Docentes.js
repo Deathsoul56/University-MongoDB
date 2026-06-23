@@ -715,7 +715,7 @@ db.docentes.insertMany([
 
 /*-------------------------------------------------------------------------------*/
 {
-    "rut": "18594861-7",
+    "rut": "13852587-2",
     "datos_personales": {
         "nombre": "Sofia García",
         "fecha_nacimiento": ISODate("1985-03-21"),

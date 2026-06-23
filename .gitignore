@@ -2,3 +2,10 @@ Universidad.aux
 Universidad.log
 Universidad.synctex.gz
 Universidad.toc
+
+__pycache__
+
+node_modules
+package.json
+package-lock.json
+bun.lock

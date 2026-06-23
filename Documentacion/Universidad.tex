@@ -9,14 +9,85 @@
 \usepackage{fancyhdr}
 \usepackage{multicol}
 \usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows.meta, positioning, shadows, fit}
+\usepackage{lmodern}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, shadows, fit, matrix}
+
+%----------------------------------
+% Colores corporativos
+%----------------------------------
+\definecolor{primary}{RGB}{41, 65, 114}
+\definecolor{secondary}{RGB}{70, 130, 180}
+\definecolor{accent}{RGB}{210, 105, 30}
+\definecolor{lightbg}{RGB}{245, 248, 250}
+\definecolor{success}{RGB}{34, 139, 34}
+\definecolor{sem1}{RGB}{232, 244, 248}
+\definecolor{sem2}{RGB}{232, 240, 232}
+\definecolor{sem3}{RGB}{248, 244, 232}
+\definecolor{sem4}{RGB}{248, 236, 236}
+\definecolor{sem5}{RGB}{244, 232, 248}
+\definecolor{sem6}{RGB}{236, 244, 252}
+\definecolor{sem7}{RGB}{232, 248, 244}
+\definecolor{sem8}{RGB}{252, 244, 232}
+\definecolor{sem9}{RGB}{244, 248, 232}
+\definecolor{sem10}{RGB}{248, 232, 240}
 
 \geometry{margin=2cm}
+\setlength{\headheight}{25pt}
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{Documentación Universidad}
-\lhead{Base de Datos MongoDB}
+\rhead{\textcolor{primary}{Documentación Universidad}}
+\lhead{\textcolor{primary}{Base de Datos MongoDB}}
 \cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primary}\leaders\hrule height \headrulewidth\hfill}}
+
+%----------------------------------
+% Estilos de sección
+%----------------------------------
+\titleformat{\section}
+{\normalfont\Large\bfseries\color{primary}}
+{\thesection}{1em}{}[\titlerule]
+\titleformat{\subsection}
+{\normalfont\large\bfseries\color{secondary}}
+{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries\color{accent}}
+{\thesubsubsection}{1em}{}
+
+\tcbuselibrary{skins,breakable,raster}
+
+%----------------------------------
+% Entorno para mallas curriculares
+%----------------------------------
+\newtcolorbox{mallasection}{
+	colback=lightbg,
+	colframe=primary,
+	boxrule=0.6pt,
+	arc=3mm,
+	left=3pt, right=3pt, top=4pt, bottom=4pt,
+	breakable
+}
+
+\newcommand{\semestrebox}[2]{%
+	\begin{tcolorbox}[
+		colback=sem#1,
+		colframe=sem#1!150!black,
+		boxrule=0.4pt,
+		arc=2mm,
+		left=3pt, right=3pt, top=2pt, bottom=2pt,
+		boxsep=1pt,
+		title={\textbf{Semestre #1}},
+		fonttitle=\small\bfseries,
+		coltitle=black,
+		top=0mm, bottom=0mm,
+		halign=justify
+	]
+	\footnotesize\raggedright #2
+	\end{tcolorbox}
+}
 
 \title{\textbf{Documentación Base de Datos Universidad}}
 \author{Sistema de Gestión Universitaria}
@@ -189,57 +260,56 @@
 	
 	\subsection{Sistema de Créditos}
 	\begin{itemize}
-		\item Cada carrera tiene una duración mínima de 6 semestres (3 años)
+		\item Cada carrera tiene una duración mínima de 10 semestres (5 años)
 		\item Los cursos están valorados entre 4 y 8 créditos según su complejidad
 		\item Se requiere un promedio mínimo de 4.0 para aprobar cada curso
-		\item Cada estudiante debe cursar un idioma como segundo lenguaje durante los 6 semestres
+		\item Cada estudiante debe cursar un idioma como segundo lenguaje durante los 10 semestres
 	\end{itemize}
 	
 	\vspace{0.5cm}
 	
 	\begin{center}
-		\begin{tikzpicture}[scale=0.8, transform shape,
-			semestre/.style={rectangle, rounded corners, draw=purple!60, fill=purple!10, very thick, minimum height=1cm, minimum width=2cm, align=center, drop shadow},
-			idioma/.style={rectangle, rounded corners, draw=teal!60, fill=teal!10, thick, minimum height=0.7cm, minimum width=2cm, align=center}
+		\begin{tikzpicture}[
+			scale=0.85, transform shape,
+			semestre/.style={rectangle, rounded corners, draw=primary!70, fill=primary!10, very thick, minimum height=1cm, minimum width=1.6cm, align=center, drop shadow={shadow xshift=1pt, shadow yshift=-1pt, opacity=0.4}},
+			idioma/.style={rectangle, rounded corners, draw=success!70, fill=success!10, thick, minimum height=0.6cm, minimum width=1.3cm, align=center, font=\tiny},
+			grad/.style={rectangle, rounded corners, draw=accent!80, fill=accent!15, very thick, minimum height=1.1cm, minimum width=2.4cm, drop shadow={shadow xshift=2pt, shadow yshift=-2pt, opacity=0.4}, font=\large\bfseries}
 			]
 			
 			% Título
-			\node[above, font=\large\bfseries] at (4.5,0.5) {Flujo de Estudios (6 Semestres)};
+			\node[above=0.6cm, font=\Large\bfseries\color{primary}] at (4,1) {Flujo de Estudios (10 Semestres)};
 			
-			% Semestres
-			\node[semestre] (s1) at (0,0) {\textbf{Sem 1}};
-			\node[semestre] (s2) at (2,0) {\textbf{Sem 2}};
-			\node[semestre] (s3) at (4,0) {\textbf{Sem 3}};
-			\node[semestre] (s4) at (6,0) {\textbf{Sem 4}};
-			\node[semestre] (s5) at (8,0) {\textbf{Sem 5}};
-			\node[semestre] (s6) at (10,0) {\textbf{Sem 6}};
+			% Matriz de semestres 2x5
+			\matrix[matrix of nodes, column sep=0.5cm, row sep=0.6cm, nodes={semestre}] (sem) {
+				\textbf{S1} & \textbf{S2} & \textbf{S3} & \textbf{S4} & \textbf{S5} \\
+				\textbf{S6} & \textbf{S7} & \textbf{S8} & \textbf{S9} & \textbf{S10} \\
+			};
 			
-			% Idiomas
-			\node[idioma] (i1) at (0,-2) {Idioma I};
-			\node[idioma] (i2) at (2,-2) {Idioma II};
-			\node[idioma] (i3) at (4,-2) {Idioma III};
-			\node[idioma] (i4) at (6,-2) {Idioma IV};
-			\node[idioma] (i5) at (8,-2) {Idioma V};
-			\node[idioma] (i6) at (10,-2) {Idioma VI};
+			% Matriz de idiomas 1x10
+			\matrix[matrix of nodes, column sep=0.25cm, row sep=0cm, below=0.7cm of sem-2-1, anchor=north west, nodes={idioma}] (idi) {
+				I & II & III & IV & V & VI & VII & VIII & IX & X \\
+			};
 			
-			% Flechas entre semestres
-			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s1) -- (s2);
-			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s2) -- (s3);
-			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s3) -- (s4);
-			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s4) -- (s5);
-			\draw[-{Stealth[scale=1.2]}, thick, purple!60] (s5) -- (s6);
+			% Flechas horizontales fila superior
+			\foreach \x in {1,...,4} {
+				\draw[-{Stealth[scale=0.9]}, thick, primary!50] (sem-1-\x) -- (sem-1-\number\numexpr\x+1\relax);
+			}
+			% Flechas horizontales fila inferior
+			\foreach \x in {1,...,4} {
+				\draw[-{Stealth[scale=0.9]}, thick, primary!50] (sem-2-\x) -- (sem-2-\number\numexpr\x+1\relax);
+			}
+			% Flecha vertical entre filas
+			\draw[-{Stealth[scale=1]}, thick, primary!60] (sem-1-5) -- (sem-2-5);
 			
 			% Flechas entre idiomas
-			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i1) -- (i2);
-			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i2) -- (i3);
-			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i3) -- (i4);
-			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i4) -- (i5);
-			\draw[-{Stealth[scale=1.2]}, thick, teal!60] (i5) -- (i6);
+			\foreach \x in {1,...,9} {
+				\draw[-{Stealth[scale=0.8]}, thick, success!60] (idi-1-\x) -- (idi-1-\number\numexpr\x+1\relax);
+			}
 			
 			% Graduación
-			\node[rectangle, rounded corners, draw=red!60, fill=red!10, very thick, minimum height=1.2cm, minimum width=2.5cm, drop shadow, font=\large\bfseries] (grad) at (12,-1) {GRADUACIÓN};
-			\draw[-{Stealth[scale=1.8]}, very thick, red!60] (s6) -- (grad);
-			\draw[-{Stealth[scale=1.8]}, very thick, red!60] (i6) -- (grad);
+			\node[grad] (grad) at (10.5,0.5) {GRADUACIÓN};
+			\draw[-{Stealth[scale=1.1]}, very thick, accent!70] (sem-2-5) -- (grad);
+			\draw[-{Stealth[scale=1.1]}, very thick, accent!70] (idi-1-10) |- ([yshift=-0.35cm]grad.south) -- (grad);
 			
 		\end{tikzpicture}
 	\end{center}	\vspace{0.5cm}
@@ -247,7 +317,7 @@
 	\subsection{Requisitos de Graduación}
 	\begin{itemize}
 		\item Aprobar todos los cursos de la malla curricular
-		\item Completar los 6 semestres de idioma
+		\item Completar los 10 semestres de idioma
 		\item Mantener un promedio general mínimo de 4.0
 		\item Cumplir con el trabajo de titulación correspondiente
 	\end{itemize}
@@ -264,7 +334,7 @@
 			
 			% Requisitos en círculos
 			\node[req] (r1) at (-4,0) {Cursos \\ Aprobados};
-			\node[req] (r2) at (4,0) {6 Semestres \\ de Idioma};
+			\node[req] (r2) at (4,0) {10 Semestres \\ de Idioma};
 			\node[req] (r3) at (-4,-3.5) {Promedio \\ $\geq$ 4.0};
 			\node[req] (r4) at (4,-3.5) {Trabajo de \\ Titulación};
 			
@@ -524,87 +594,53 @@
 			\item Comedia I y II
 			\item Ensayos I y II
 			\item Biografías I y II
-			\item Historia de la Lengua Española
-			\item Lingüística General
-			\item Latín
-		\end{itemize}
-	\end{multicols}
-	
-	\newpage
-	
-	%============================================
-	\section{Carreras Universitarias}
+		\item Historia de la Lengua Española
+		\item Lingüística General
+		\item Latín
+	\end{itemize}
+\end{multicols}
+
+%--------------------------------------------
+\subsection{Cursos de Titulación}
+%--------------------------------------------
+
+\begin{multicols}{2}
+	\begin{itemize}
+		\item Seminario de Titulación I
+		\item Seminario de Titulación II
+		\item Práctica Profesional
+		\item Tesis I
+		\item Tesis II
+		\item Proyecto de Titulación
+		\item Trabajo de Titulación
+	\end{itemize}
+\end{multicols}
+
+\newpage
+
+%============================================
+\section{Carreras Universitarias}
 	%============================================
 	
 	%--------------------------------------------
 	\subsection{Astronomía}
 	%--------------------------------------------
 	
-	\begin{multicols}{2}
-		\textbf{Semestre 1}
-		\begin{itemize}
-			\item Cálculo I
-			\item Álgebra
-			\item Introducción a la Astronomía
-			\item Introducción a las Ciencias
-			\item Introducción a la Física
-			\item Idioma
-		\end{itemize}
-		
-		\textbf{Semestre 2}
-		\begin{itemize}
-			\item Cálculo II
-			\item Álgebra Lineal
-			\item Astronomía I
-			\item Programación
-			\item Química General I
-			\item Idioma
-		\end{itemize}
-		
-		\textbf{Semestre 3}
-		\begin{itemize}
-			\item Cálculo III
-			\item Probabilidad y Estadística
-			\item Astronomía II
-			\item Programación Avanzada
-			\item Física Mecánica
-			\item Laboratorio I
-			\item Idioma
-		\end{itemize}
-		
-		\textbf{Semestre 4}
-		\begin{itemize}
-			\item Ecuaciones Diferenciales Ordinarias I
-			\item Análisis Multivariado
-			\item Astrofísica General
-			\item Electromagnetismo I
-			\item Astronomía Práctica I
-			\item Laboratorio II
-			\item Idioma
-		\end{itemize}
-		
-		\textbf{Semestre 5}
-		\begin{itemize}
-			\item Variable Compleja
-			\item Cálculo de Variaciones
-			\item Astrofísica Estelar
-			\item Electrodinámica I
-			\item Astronomía Práctica II
-			\item Laboratorio III
-			\item Idioma
-		\end{itemize}
-		
-		\textbf{Semestre 6}
-		\begin{itemize}
-			\item Cálculo Numérico
-			\item Mecánica Clásica I
-			\item Astrofísica Galáctica
-			\item Termodinámica
-			\item Óptica
-			\item Laboratorio IV
-			\item Idioma
-		\end{itemize}
-	\end{multicols}
+	\begin{mallasection}
+	\renewcommand{\arraystretch}{1.0}
+	\begin{tabular}{@{}p{0.48\linewidth}@{\hspace{0.04\linewidth}}p{0.48\linewidth}@{}}
+		\semestrebox{1}{Cálculo I\\ Álgebra\\ Introducción a la Astronomía\\ Introducción a las Ciencias\\ Introducción a la Física\\ Idioma} &
+		\semestrebox{2}{Cálculo II\\ Álgebra Lineal\\ Astronomía I\\ Programación\\ Química General I\\ Idioma} \\[2mm]
+		\semestrebox{3}{Cálculo III\\ Probabilidad y Estadística\\ Astronomía II\\ Programación Avanzada\\ Física Mecánica\\ Laboratorio I\\ Idioma} &
+		\semestrebox{4}{Ecuaciones Diferenciales Ordinarias I\\ Análisis Multivariado\\ Astrofísica General\\ Electromagnetismo I\\ Astronomía Práctica I\\ Laboratorio II\\ Idioma} \\[2mm]
+		\semestrebox{5}{Variable Compleja\\ Cálculo de Variaciones\\ Astrofísica Estelar\\ Electrodinámica I\\ Astronomía Práctica II\\ Laboratorio III\\ Idioma} &
+		\semestrebox{6}{Cálculo Numérico\\ Mecánica Clásica I\\ Astrofísica Galáctica\\ Termodinámica\\ Óptica\\ Laboratorio IV\\ Idioma} \\[2mm]
+		\semestrebox{7}{Mecánica Clásica II\\ Mecánica Cuántica I\\ Astrofísica Extragaláctica\\ Astronomía Teórica Computacional\\ Análisis Instrumental (Física)\\ Idioma} &
+		\semestrebox{8}{Mecánica Cuántica II\\ Física Estadística\\ Cosmología\\ Radioastronomía\\ Física Contemporánea I\\ Idioma} \\[2mm]
+		\semestrebox{9}{Electromagnetismo II\\ Electrodinámica II\\ Física-Matemática I\\ Ondas y Vibraciones\\ Seminario de Titulación I\\ Idioma} &
+		\semestrebox{10}{Mecánica Sólidos Rígidos I\\ Mecánica de Fluidos\\ Física Contemporánea II\\ Seminario de Titulación II\\ Tesis I\\ Idioma}
+	\end{tabular}
+	\end{mallasection}
 	
 	\newpage
 	
@@ -1335,6 +1371,77 @@
 	\newpage
 	
 	%--------------------------------------------
+	\subsection{Pedagogía en Lenguaje}
+	%--------------------------------------------
+	
+	\begin{multicols}{2}
+		\textbf{Semestre 1}
+		\begin{itemize}
+			\item Taller de Competencias Comunicativas I
+			\item Literatura Universal: Letras Clásicas y Medievales
+			\item Historia de la Educación en Chile y Políticas Publicas
+			\item Educación, Sociedad y Desarrollo Humano
+			\item Introducción a la Literatura
+			\item Fonología y Morfología del Español
+			\item idioma
+		\end{itemize}
+		
+		\textbf{Semestre 2}
+		\begin{itemize}
+			\item Taller de Competencias Comunicativas II
+			\item Literatura Española: Medioevo y Siglo de Oro
+			\item Fonología y Morfología del Español
+			\item Taller Pedagógico I
+			\item Identidad Profesional Docente
+			\item Psicología del Desarrollo Humano
+			\item idioma
+		\end{itemize}
+		
+		\textbf{Semestre 3}
+		\begin{itemize}
+			\item Gramática Española I
+			\item Literatura Universal Moderna y Contemporánea
+			\item Evolución de los Estudios Literarios
+			\item Taller Pedagógico II
+			\item Construcción del Ser Docente y rol Pedagógico
+			\item Didáctica de la Literatura
+			\item idioma
+		\end{itemize}
+		
+		\textbf{Semestre 4}
+		\begin{itemize}
+			\item Inglés IV
+			\item Morfosintaxis II
+			\item Evaluación de los Aprendizajes
+			\item Análisis de la Gramática
+			\item Psicología Educativa
+			\item Taller Pedagógico III
+		\end{itemize}
+		
+		\textbf{Semestre 5}
+		\begin{itemize}
+			\item Inglés V
+			\item Investigación Acción en la Escuela
+			\item Escritura Académica
+			\item Didáctica del Idioma Inglés I
+			\item Literatura Contemporánea en Lengua Inglesa
+			\item Taller Pedagógico IV
+		\end{itemize}
+		
+		\textbf{Semestre 6}
+		\begin{itemize}
+			\item Inglés VI
+			\item Didáctica del Idioma Inglés II
+			\item Teorías y Diseños Curriculares
+			\item Entonación de la Lengua Inglesa
+			\item Orientación Educacional
+			\item Lingüística Aplicada I
+		\end{itemize}
+	\end{multicols}
+	
+	\newpage
+	
+	%--------------------------------------------
 	\subsection{Pedagogía en Matemáticas}
 	%--------------------------------------------
 	
@@ -1661,6 +1768,10 @@
 			\item Inglés IV
 			\item Inglés V
 			\item Inglés VI
+			\item Inglés VII
+			\item Inglés VIII
+			\item Inglés IX
+			\item Inglés X
 		\end{itemize}
 		
 		\textbf{Francés}
@@ -1671,6 +1782,10 @@
 			\item Francés IV
 			\item Francés V
 			\item Francés VI
+			\item Francés VII
+			\item Francés VIII
+			\item Francés IX
+			\item Francés X
 		\end{itemize}
 		
 		\textbf{Italiano}
@@ -1681,6 +1796,10 @@
 			\item Italiano IV
 			\item Italiano V
 			\item Italiano VI
+			\item Italiano VII
+			\item Italiano VIII
+			\item Italiano IX
+			\item Italiano X
 		\end{itemize}
 		
 		\textbf{Alemán}
@@ -1691,6 +1810,10 @@
 			\item Alemán IV
 			\item Alemán V
 			\item Alemán VI
+			\item Alemán VII
+			\item Alemán VIII
+			\item Alemán IX
+			\item Alemán X
 		\end{itemize}
 		
 		\textbf{Portugués}
@@ -1701,6 +1824,10 @@
 			\item Portugués IV
 			\item Portugués V
 			\item Portugués VI
+			\item Portugués VII
+			\item Portugués VIII
+			\item Portugués IX
+			\item Portugués X
 		\end{itemize}
 		
 		\textbf{Mandarín}
@@ -1711,6 +1838,10 @@
 			\item Mandarín IV
 			\item Mandarín V
 			\item Mandarín VI
+			\item Mandarín VII
+			\item Mandarín VIII
+			\item Mandarín IX
+			\item Mandarín X
 		\end{itemize}
 	\end{multicols}
 	
